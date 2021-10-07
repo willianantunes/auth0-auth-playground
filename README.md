@@ -7,6 +7,10 @@ This is far to be considered a production-ready one.
 
 ## Notes
 
+### Configuring it to run locally
+
+Instead of using `localhost`, please configure your `hosts` adding `app.local` to answer for your loopback address. If you configure your Application on Auth0 using `localhost`, the user will have to consent all scopes you're asking for.
+
 ### OpenID Configuration Request
 
 You can get your [OpenID Configuration Request](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfigurationRequest)

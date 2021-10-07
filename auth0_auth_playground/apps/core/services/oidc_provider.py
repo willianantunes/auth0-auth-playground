@@ -195,6 +195,9 @@ class OIDCProvider:
             "response_type": "code",
             "redirect_uri": redirect_uri,
             "scope": " ".join(cls.scopes),
+            # https://auth0.com/docs/brand-and-customize/i18n/universal-login-internationalization
+            # Instead of passing the parameter below, I changed the tenant itself!
+            # "ui_locales": "pt-BR",
         }
         logger.debug("Building authorization URL...")
         return build_url_with_query_strings(auth_url, params)

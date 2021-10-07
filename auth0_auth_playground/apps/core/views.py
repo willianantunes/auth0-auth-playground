@@ -25,9 +25,7 @@ def index(request):
 
 def logout(request):
     request.session.flush()
-    index_request_path = reverse("index")
-    redirect_uri = request.build_absolute_uri(index_request_path)
-    redirect_uri = redirect_uri.replace("http", "https") if "localhost" not in redirect_uri else redirect_uri
+    redirect_uri = _build_uri(request, "index")
     return redirect(redirect_uri)
 
 
@@ -44,5 +42,4 @@ def initiate_login_flow(request):
 
 def _build_uri(request, view_name):
     location_redirect = reverse(view_name)
-    redirect_uri = request.build_absolute_uri(location_redirect)
-    return redirect_uri.replace("http", "https") if "localhost" not in redirect_uri else redirect_uri
+    return request.build_absolute_uri(location_redirect)
