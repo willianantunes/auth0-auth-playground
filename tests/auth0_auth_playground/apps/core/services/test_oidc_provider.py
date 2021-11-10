@@ -1,10 +1,20 @@
 from unittest import TestCase
 
+from auth0_auth_playground import settings
 from auth0_auth_playground.apps.core.services.oidc_provider import OIDCConfigurationDocument
 from auth0_auth_playground.apps.core.services.oidc_provider import OIDCProvider
 
 
 class OIDCProviderTest(TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        OIDCProvider.configure_class_properties(
+            settings.SOCIAL_AUTH_AUTH0_DOMAIN,
+            settings.SOCIAL_AUTH_AUTH0_KEY,
+            settings.SOCIAL_AUTH_AUTH0_SECRET,
+            settings.SOCIAL_AUTH_AUTH0_SCOPE,
+        )
+
     def test_should_setup_oidc_configuration(self):
         # Act
         OIDCProvider.configure_oidc_configuration_document()
@@ -71,4 +81,4 @@ class OIDCProviderTest(TestCase):
             ],
             request_uri_parameter_supported=False,
         )
-        assert len(public_keys) == 2
+        assert len(public_keys) == 1

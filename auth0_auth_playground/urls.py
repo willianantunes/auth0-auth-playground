@@ -1,10 +1,17 @@
 from django.urls import path
 
+from auth0_auth_playground import settings
 from auth0_auth_playground.apps.core import views
 from auth0_auth_playground.apps.core.api import api_views
 from auth0_auth_playground.apps.core.api.v1 import api_views as api_views_v1
 from auth0_auth_playground.apps.core.services.oidc_provider import OIDCProvider
 
+OIDCProvider.configure_class_properties(
+    settings.SOCIAL_AUTH_AUTH0_DOMAIN,
+    settings.SOCIAL_AUTH_AUTH0_KEY,
+    settings.SOCIAL_AUTH_AUTH0_SECRET,
+    settings.SOCIAL_AUTH_AUTH0_SCOPE,
+)
 OIDCProvider.configure_oidc_configuration_document()
 
 urlpatterns = [

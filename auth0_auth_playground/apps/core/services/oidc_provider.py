@@ -63,16 +63,17 @@ class OIDCProvider:
     jwt_public_keys: JWTPublicKeys
     jwt_public_keys_algorithms: Set[str]
 
-    domain = settings.SOCIAL_AUTH_AUTH0_DOMAIN
-    app_client_key = settings.SOCIAL_AUTH_AUTH0_KEY
-    app_client_secret = settings.SOCIAL_AUTH_AUTH0_SECRET
-    scopes = settings.SOCIAL_AUTH_AUTH0_SCOPE
+    domain = str
+    app_client_key = str
+    app_client_secret = str
+    scopes = str
 
-    def __init__(self, domain, app_key, app_secret, scopes: List[str]):
-        self.domain = domain
-        self.app_client_key = app_key
-        self.app_client_secret = app_secret
-        self.scopes = scopes
+    @classmethod
+    def configure_class_properties(cls, domain, app_key, app_secret, scopes: List[str]):
+        cls.domain = domain
+        cls.app_client_key = app_key
+        cls.app_client_secret = app_secret
+        cls.scopes = scopes
 
     @classmethod
     def configure_oidc_configuration_document(cls):
@@ -178,8 +179,9 @@ class OIDCProvider:
 
         jwt_public_keys_algorithms = set()
         for public_key in public_keys["keys"]:
-            algorithm = public_key["alg"]
-            jwt_public_keys_algorithms.add(algorithm)
+            algorithm = public_key.get("alg")
+            if algorithm:
+                jwt_public_keys_algorithms.add(algorithm)
 
         cls.jwt_public_keys = public_keys
         cls.jwt_public_keys_algorithms = jwt_public_keys_algorithms
@@ -219,17 +221,22 @@ class OIDCProvider:
         response = requests.post(token_endpoint, headers=headers, data=body, auth=app_credentials)
         content = response.json()
         id_token = content["id_token"]
-        claims = cls._retrieve_claims(id_token)
+        access_token = content["access_token"]
+        claims = cls._retrieve_claims(id_token, access_token)
         return content, claims
 
     @classmethod
-    def _retrieve_claims(cls, id_token: str) -> dict:
-        issuer = f"https://{cls.domain}/"
+    def _retrieve_claims(cls, id_token: str, access_token: str) -> dict:
+        issuer = cls.oidc_configuration_document.issuer
         algorithms = list(cls.jwt_public_keys_algorithms)
+        if not algorithms:
+            algorithms.append(jwt.get_unverified_headers(id_token)["alg"])
         audience = cls.app_client_key
         public_keys = cls.jwt_public_keys
 
-        return jwt.decode(id_token, public_keys, algorithms=algorithms, audience=audience, issuer=issuer)
+        return jwt.decode(
+            id_token, public_keys, algorithms=algorithms, audience=audience, issuer=issuer, access_token=access_token
+        )
 
     @classmethod
     def build_logout_url(cls, return_to):
