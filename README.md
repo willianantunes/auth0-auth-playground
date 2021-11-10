@@ -118,6 +118,9 @@ Forums:
 - [Prompt user for information during signup](https://community.auth0.com/t/prompt-user-for-information-during-signup/6767)
 - [How do I skip the consent page for my API Authorization flow?](https://community.auth0.com/t/how-do-i-skip-the-consent-page-for-my-api-authorization-flow/6035)
 - [How to allow the end-user to update their own profile information?](https://community.auth0.com/t/how-to-allow-the-end-user-to-update-their-own-profile-information/6228)
+- [How to set name as required field for user?](https://community.auth0.com/t/how-to-set-name-as-required-field-for-user/54780/3)
+- [Can you use Universal Login page for both passwordless AND “standard” login?](https://community.auth0.com/t/can-you-use-universal-login-page-for-both-passwordless-and-standard-login/24830)
+- [Structure of @@config@@](https://community.auth0.com/t/structure-of-config/9155)
 
 APIs:
 
