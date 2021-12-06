@@ -104,6 +104,11 @@ Sample output:
 
 ## Links
 
+Architecture/Project:
+
+- [Project Planning Guide](https://auth0.com/docs/architecture-scenarios/b2c/architecture#project-planning-guide)
+- [Implementation Planning Checklists](https://auth0.com/docs/architecture-scenarios/checklists)
+
 Projects:
 
 - [auth0-samples/auth0-django-web-app](https://github.com/auth0-samples/auth0-django-web-app/tree/master/01-Login)
